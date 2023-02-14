@@ -1,6 +1,13 @@
 #!/usr/bin/python3
 import json
 import os
+from models.amenity import Amenity
+from models.base_model import BaseModel
+from models.city import City
+from models.place import Place
+from models.state import State
+from models.user import User
+from models.review import Review
 """
 Defines a class ``FileStorage``.
 """
@@ -50,7 +57,6 @@ class FileStorage:
             with open(self.__file_path, encoding='utf-8') as f:
                 outer_dict = json.load(f)
                 for value in outer_dict.values():
-                    from models.base_model import BaseModel
                     cls_name = value["__class__"]
                     del value["__class__"]
                     self.new(eval(cls_name)(**value))
