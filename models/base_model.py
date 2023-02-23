@@ -12,11 +12,18 @@ class BaseModel:
     """A base model that has common attribute/methods for other classes.
     """
 
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
         """Initializes the basemodel class."""
-        self.id = str(uuid.uuid4())
-        self.created_at = datetime.now()
-        self.updated_at = datetime.now()
+        if not kwargs:
+            self.id = str(uuid.uuid4())
+            self.created_at = self.updated_at = datetime.now()
+        else:
+            for key, value in kwargs.items():
+                if key != '__class__':
+                    if key in ('created_at', 'updated_at'):
+                        setattr(self, key, datetime.fromisoformat(value))
+                    else:
+                        setattr(self, key, value)
 
     def __str__(self):
         """Return the string representation of an object."""
